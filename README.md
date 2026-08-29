@@ -136,6 +136,25 @@ For example, a movement command originating from ALLBERT's web dashboard can be 
 
 Using two computing platforms gives ALLBERT a modular computing architecture in which the user-facing and network responsibilities can develop independently from the hardware-control system while still allowing both sides to work together as a complete robotic system.
 
+#### Layered Software Architecture
+
+ALLBERT's software did not begin as a layered system. The original program consisted primarily of a single Python class containing the GPIO pin assignments and functionality required to control the robot's wheels. At that stage of development, the immediate goal was simply to establish direct software control over the physical hardware.
+
+As the robot developed, I realized that movement could not safely depend on hardware-control code alone. ALLBERT would eventually be making movement decisions based on information received from its sensors. If that information was missing, invalid, or incorrectly handled, the result would not be limited to a software error. The robot could move incorrectly and physically run into a wall or another obstacle.
+
+This led me to begin separating the software into layers with different responsibilities. Rather than allowing one class to receive information, make decisions, and directly control the hardware, I wanted each part of the software to correspond to a specific responsibility within the robotic system.
+
+The resulting architecture is divided into three primary layers:
+
+- **Low-Level Hardware Layer:** Responsible for direct interaction with the physical hardware, including GPIO, PWM, and motor-control operations.
+- **Mid-Level Logic Layer:** Evaluates sensor information and determines which movements are appropriate based on the robot's surroundings and safety conditions.
+- **High-Level Autonomous Layer:** Coordinates the robot's larger autonomous behavior and determines what ALLBERT should attempt to do.
+
+This architecture also reflects how I prefer to design software generally. I like systems and subsystems in which individual components have clearly defined responsibilities and work together rather than having one part of the program attempt to manage everything.
+
+For ALLBERT, that separation has an additional safety purpose. Information can be evaluated before it ultimately results in physical movement, allowing safety and decision logic to exist between environmental input and hardware action.
+
+The layered architecture therefore developed from both a software-design preference and a physical requirement: as ALLBERT became more autonomous, its software needed a structure that could organize responsibility while reducing the possibility that bad information would lead directly to unsafe movement.
 
 
 
