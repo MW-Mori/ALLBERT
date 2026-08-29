@@ -122,7 +122,19 @@ Physical placement was also important. Each sensor was positioned to maintain a 
 
 This sensor configuration reflects a principle I have followed throughout ALLBERT's development: complexity should serve a purpose. The current sensors provide the information required for the robot's navigation decisions while keeping the hardware and software straightforward and understandable.
 
+#### Computing Hardware Integration
 
+One of the early decisions in ALLBERT's development was determining what computer should control the robot. I was interested in both the Raspberry Pi and the BeagleBone Black, but I learned that the BeagleBone Black offered hardware capabilities that made it well suited for embedded control and timing-sensitive interaction with physical hardware.
+
+Rather than choosing one platform and abandoning the other, I began exploring whether the Raspberry Pi and BeagleBone Black could be used together. This led to a larger architectural decision: instead of having one computer responsible for every part of ALLBERT, I could give each computer a dedicated role and allow them to operate together as parts of a larger system.
+
+The BeagleBone Black became ALLBERT's hardware-control computer. It interfaces with the robot's sensors and sends the GPIO and PWM control signals required by the motor controller. The Raspberry Pi 3B+ was assigned the higher-level interface and network role, providing the foundation for ALLBERT's web dashboard and communication with the BeagleBone Black.
+
+This separation reflects the same design philosophy I use when writing software. I prefer systems in which individual functions, classes, components, and subsystems have clearly defined responsibilities rather than having one part attempt to perform every task. The Raspberry Pi and BeagleBone Black therefore operate as separate subsystems with different responsibilities while contributing to the operation of the same robot.
+
+For example, a movement command originating from ALLBERT's web dashboard can be received by the Raspberry Pi and communicated to the BeagleBone Black. The BeagleBone Black then translates the requested movement into the appropriate control signals for the TB6612FNG motor controller, which supplies the motor outputs that physically drive the robot.
+
+Using two computing platforms gives ALLBERT a modular computing architecture in which the user-facing and network responsibilities can develop independently from the hardware-control system while still allowing both sides to work together as a complete robotic system.
 
 
 
