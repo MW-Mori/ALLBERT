@@ -86,3 +86,39 @@ ALLBERT uses four TT motors, while the TB6612FNG provides two motor-control chan
 
 This configuration allowed a two-channel motor controller to provide the movement control needed for ALLBERT while keeping the motor-control architecture straightforward and consistent with the robot's physical design.
 
+#### Power System
+
+When I began designing ALLBERT's power system, I did not initially know that the motors and control electronics should be powered separately. Through research and development of the motor-control system, I learned that the motors and computing hardware have different electrical requirements and that separating their power supplies would provide a cleaner and more appropriate power architecture.
+
+For the BeagleBone Black and Raspberry Pi 3B+, I chose an Anker power bank. My available options were limited, and I needed a portable power solution that could accommodate the different USB connections required by both computers. Using the appropriate USB cables allowed one portable power source to support the computing side of ALLBERT without relying on the motor power supply.
+
+The four TT motors receive their power separately through the TB6612FNG motor controller. For the motor supply, I used a six-slot AA battery holder containing four AA batteries and two dummy cells. Although the holder could physically accommodate six batteries, I deliberately chose four active cells to provide approximately 6V rather than supplying the approximately 9V that six fresh 1.5V cells could produce. This allowed me to operate the motor system more conservatively while still using the battery holder that fit the physical design of the robot.
+
+Separating the power sources did not mean completely separating the two electrical systems. As I developed the design, I learned that the BeagleBone Black and motor controller still needed a common ground. Sharing this ground provides a common electrical reference so that the motor controller can correctly interpret the control signals sent by the BeagleBone Black.
+
+The resulting power architecture separates the computing and motor loads while still allowing both sides of ALLBERT to communicate through a shared electrical reference. It also gives each part of the robot a power source appropriate for its role rather than attempting to operate the entire system from a single supply.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
