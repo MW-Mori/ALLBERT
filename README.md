@@ -64,3 +64,15 @@ Implementing the terminal blocks also presented another practical challenge. Som
 
 The terminal blocks ultimately made ALLBERT's electrical system cleaner, more organized, and easier to modify. Instead of connections appearing to be placed wherever space was available, each connection had a defined location and purpose. This supported a design approach that I continued throughout the build: keep the system clean, organized, understandable, and easy to readjust when changes are necessary.
 
+#### Standoffs and Physical Mounting
+
+Once the perfboard became the foundation for ALLBERT's motor-control and electrical assembly, I needed a way to securely mount it to the robot's base while keeping the electronics accessible. The selection of mounting hardware available to me was somewhat limited, so I focused on finding a solution that was practical, reliable, and appropriate for the design.
+
+I chose plastic standoffs rather than metal ones. In addition to supporting and raising the perfboard from the robot's base, the nonconductive material eliminated an unnecessary conductive path near the electrical system. This was important to me because I wanted to remain conscious of future wiring changes and reduce the possibility of an exposed connection accidentally contacting conductive mounting hardware.
+
+The standoffs allowed the perfboard to function as more than a board holding individual components. Once mounted, it became a secure physical platform for ALLBERT's electrical system, including the motor controller and its surrounding connections. Raising and securing the assembly also made it easier to access the motor controller, connect and adjust jumper wires, and route wiring without the perfboard moving around during changes.
+
+This approach gave the electrical system a defined location within ALLBERT while keeping it accessible for future adjustments, supporting the same clean, organized, and serviceable design approach used throughout the build.
+
+
+
