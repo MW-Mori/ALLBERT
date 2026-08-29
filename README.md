@@ -54,5 +54,13 @@ The transition was not immediate. One of the first approaches I considered invol
 
 Using Perfboard ultimately gave the motor controller a secure physical home, kept the electrical assembly organized, and made it easier to mount to ALLBERT's base. More importantly, it allowed the motor-control assembly to become a permanent part of the robot rather than remaining a temporary prototype.
 
+#### Screw Terminal Blocks
 
+As ALLBERT's electrical system grew, I realized that I needed a central location for connections that would be shared across multiple components. There were only so many connection points available directly on the individual boards, and although I understood that certain connections needed to be distributed throughout the robot, I initially could not visualize how to organize that distribution cleanly.
+
+Screw terminal blocks provided the missing piece. They offered a secure central connection point where wiring that shared a common electrical connection could be brought together and then distributed to the components that needed it. I ultimately used two terminal blocks: one for ALLBERT's 3.3V logic power rail and another for the common ground rail.
+
+Implementing the terminal blocks also presented another practical challenge. Some of the jumper wires from the BeagleBone Black and motor-control area were not long enough to reach the location of the terminal blocks. This required me to learn how to extend wiring by stripping insulation, preparing the conductors carefully, and creating secure crimped connections without leaving the wire strands frayed or exposed.
+
+The terminal blocks ultimately made ALLBERT's electrical system cleaner, more organized, and easier to modify. Instead of connections appearing to be placed wherever space was available, each connection had a defined location and purpose. This supported a design approach that I continued throughout the build: keep the system clean, organized, understandable, and easy to readjust when changes are necessary.
 
