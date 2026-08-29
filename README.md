@@ -30,11 +30,11 @@ The software architecture is divided into three primary layers:
 - -**Mid-Level Logic Layer:** Interprets sensor states and applies decision-making logic to determine appropriate actions, such as advancing, turning or escaping from a blocked path.
 - **Low-Level Hardware Logic:** This layer interfaces directly with the physical hardware, translating movement commands into GPIO and PWM signals used to control the motors.
 
-###Computing Architecture
+### Computing Architecture
 
 ALLBERT uses both a Beaglebone Black and a Raspberry Pi 3B+, with each computer assigned a different role within the system. The BeagleBone Black serves as the primary hardware-control, handling direct interaction with the robot's motors and sensors through GPIO and PWM capabilities. The Raspberry Pi 3B+ serves as the higher-level interface computer, providing the foundation for ALLBERT's web dashboard and communication with the hardware-control system.
 
-##Hardware
+## Hardware
 
 ALLBERT's hardware was selected and assembled with an emphasis on reliable control, modularity, safety, and the ability to troubleshoot or modify individual parts of the system. Many of the hardware evolved as the robot was built and tested with each decision addressing a specific electrical, mechanical or control requirement.
 
