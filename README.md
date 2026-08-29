@@ -110,7 +110,17 @@ This led me to use jumper wires, headers, connectors, and terminal connections w
 
 The resulting wiring system reflects an important principle behind ALLBERT's design: individual parts of the robot should be replaceable or modifiable without requiring the entire system to be rebuilt. Keeping the electrical system organized and modular allows future versions of ALLBERT to build upon working subsystems rather than always starting from the beginning.
 
+#### Sensors
 
+For ALLBERT's obstacle-detection system, I wanted the robot to be able to understand whether movement was possible in each of its four primary directions: front, rear, left, and right. Detecting an obstacle directly in front of the robot would not be enough for autonomous navigation. If the front is blocked, ALLBERT also needs information about the surrounding directions before deciding whether it can turn or back away safely.
+
+I therefore equipped ALLBERT with four directional KY obstacle sensors, with one sensor responsible for each primary direction. I deliberately kept the sensing system relatively simple. For the current version of ALLBERT, the navigation system does not need to identify objects or build a detailed representation of its surroundings. It primarily needs to determine whether a direction is clear or blocked.
+
+The digital output from each sensor can be interpreted by the software as a simple obstacle state. This provides the mid-level decision logic with the information it needs without introducing additional sensing complexity that the current navigation system does not require. More advanced sensors can be incorporated in future versions if ALLBERT eventually requires capabilities such as more precise distance measurement, mapping, or environmental recognition.
+
+Physical placement was also important. Each sensor was positioned to maintain a clear view of the direction it monitors. Wiring and other components were arranged so that they would not unnecessarily obstruct the sensors' detection paths.
+
+This sensor configuration reflects a principle I have followed throughout ALLBERT's development: complexity should serve a purpose. The current sensors provide the information required for the robot's navigation decisions while keeping the hardware and software straightforward and understandable.
 
 
 
