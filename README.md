@@ -98,7 +98,17 @@ Separating the power sources did not mean completely separating the two electric
 
 The resulting power architecture separates the computing and motor loads while still allowing both sides of ALLBERT to communicate through a shared electrical reference. It also gives each part of the robot a power source appropriate for its role rather than attempting to operate the entire system from a single supply.
 
+#### Wiring and Connections
 
+As ALLBERT's electrical system became more complex, I learned that different types of electrical connections did not necessarily require the same type or size of wire. Connections carrying power may need larger conductors because they can carry more current, while GPIO and other control signals carry much smaller currents and can use thinner wiring. I applied this distinction throughout the robot rather than attempting to use one type of wire for every connection.
+
+The physical layout also required me to adapt some of the wiring. Several existing jumper wires were not long enough to reach their intended destinations, so I learned how to extend wiring by carefully stripping insulation, preparing the conductors, and creating secure crimped connections. In some cases, this also required joining wiring of different sizes when the available connections required it.
+
+Another priority was keeping portions of ALLBERT's wiring removable. I did not want every connection permanently soldered in place because I wanted the robot to remain adaptable. If I later change the chassis, increase the robot's size, replace damaged wiring, change its physical design, or replace a component, I want to be able to reuse working portions of the existing electrical system rather than rebuilding the robot from the beginning.
+
+This led me to use jumper wires, headers, connectors, and terminal connections where appropriate. Low-current sensor and control signals could use jumper-style connections between the sensors, BeagleBone Black, and motor-controller control inputs, while shared 3.3V power and ground connections were organized through the screw terminal blocks. Motor output connections from the TB6612FNG were also designed with serviceability in mind so that the motor wiring could be disconnected or changed without unnecessarily rebuilding the surrounding electrical assembly.
+
+The resulting wiring system reflects an important principle behind ALLBERT's design: individual parts of the robot should be replaceable or modifiable without requiring the entire system to be rebuilt. Keeping the electrical system organized and modular allows future versions of ALLBERT to build upon working subsystems rather than always starting from the beginning.
 
 
 
