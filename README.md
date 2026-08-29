@@ -42,6 +42,17 @@ ALLBERT did not begin as a robot designed entirely from a predetermined parts li
 
 As a result, ALLBERT became a custom combination of hardware that was never originally designed to work together as a single system. Building ALLBERT meant learning how to make these different components work together. Along the way, I had to solve compatibility and mounting problems, learn new methods of wiring and assembly, reconsider earlier decisions when something did not work as expected, and redesign portions of the robot as new challenges appeared. The hardware choices documented below reflect that process and explain not only what I used, but why I chose each solution.
 
+### Hardware Decisions
+
+#### Perfboard
+
+One of my first hardware challenges was figuring out how the motor controller and its required wiring would become a secure part of ALLBERT. The motor controller needed to connect to several parts of the electrical system, but I also needed a way to organize those connections and securely mount the controller to the robot's base.
+
+I initially considered using a solderless breadboard. However, as I learned more about its role in prototyping and testing, I decided that I wanted ALLBERT's final electrical system to use a more permanent construction method. This led me to using a Perfboard, even though I had never used one or soldered before and was initially uncomfortable with the idea of soldering.
+
+The transition was not immediate. One of the first approaches I considered involved soldering wires directly to the motor controller's pins. In practice, the wires and solder were too cumbersome for the small pins, making the connections awkward, fragile, and difficult to secure. Rather than continuing with a connection method that did not work well physically, I reconsidered how the motor controller should interface with the rest of the electrical system.
+
+Using Perfboard ultimately gave the motor controller a secure physical home, kept the electrical assembly organized, and made it easier to mount to ALLBERT's base. More importantly, it allowed the motor-control assembly to become a permanent part of the robot rather than remaining a temporary prototype.
 
 
 
