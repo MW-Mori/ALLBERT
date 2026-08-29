@@ -74,5 +74,15 @@ The standoffs allowed the perfboard to function as more than a board holding ind
 
 This approach gave the electrical system a defined location within ALLBERT while keeping it accessible for future adjustments, supporting the same clean, organized, and serviceable design approach used throughout the build.
 
+#### TB6612FNG Motor Controller
 
+When I began working with ALLBERT's TT motors, one of the first problems I encountered was simply determining how the motors would connect to and be controlled by the rest of the system. The motors had their own wiring, but there was no appropriate place to connect them directly to the BeagleBone Black. Researching how DC motors are controlled led me to motor controllers and eventually to the TB6612FNG.
+
+During my research, I compared the TB6612FNG with alternatives such as the L298N and found the TB6612FNG to be a better fit for the project. Another consideration at the time was soldering. I had never soldered before and was not yet comfortable doing it, so finding a motor controller with its pins already installed influenced my decision. Ironically, as ALLBERT developed, I eventually learned to solder and incorporated soldering extensively into the finished electrical assembly.
+
+The TB6612FNG serves as the interface between ALLBERT's control computer and its motors. The BeagleBone Black determines how the robot should move and sends low-power direction and PWM control signals to the motor controller. The TB6612FNG then uses the separate motor power supply to drive the motors according to those commands.
+
+ALLBERT uses four TT motors, while the TB6612FNG provides two motor-control channels. I organized the motors into left and right sides, with the two motors on each side operating together through one channel. This arrangement made sense because ALLBERT's wheels do not physically pivot left or right like the steering wheels of a conventional car. Instead, the robot changes direction by controlling the movement of its left and right sides differently. One side can move differently from, or opposite to, the other side to produce turning and pivoting behavior.
+
+This configuration allowed a two-channel motor controller to provide the movement control needed for ALLBERT while keeping the motor-control architecture straightforward and consistent with the robot's physical design.
 
