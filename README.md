@@ -36,12 +36,11 @@ ALLBERT uses both a Beaglebone Black and a Raspberry Pi 3B+, with each computer 
 
 ## Hardware
 
-ALLBERT's hardware was selected and assembled with an emphasis on reliable control, modularity, safety, and the ability to troubleshoot or modify individual parts of the system. Many of the hardware evolved as the robot was built and tested with each decision addressing a specific electrical, mechanical or control requirement.
+ALLBERT's hardware was selected and assembled with an emphasis on reliable control, modularity, safety, and the ability to troubleshoot or modify individual parts of the system. Many of these hardware decisions evolved as the robot was built and tested with each decision addressing a specific electrical, mechanical or control requirement.
 
-ALLBERT did not begin as a robot designed entirely from a predetermined parts list. The project started with a robotics kit that was given to me. I soon realized that as the build developed, I would need different parts that the kit did not offer nor fit my vision. I chose to keep only a small number of the original kit's components and build the rest of the system around parts selected from different sources. I even purchased a second kit twice to construct the base layer that I wanted.
+ALLBERT did not begin as a robot designed entirely from a predetermined parts list. The project started with a robotics kit that was given to me. I soon realized that as the build developed, I would need different parts that the kit did not offer and that some of the original components did not fit my vision for ALLBERT. I chose to keep only a small number of the original kit's components and build the rest of the system around parts selected from different sources. I eventually purchased two additional robotics kits, different from the original, so I could use and combine specific pieces from them to construct the base I envisioned for ALLBERT.
 
-As a result, ALLBERT became a custom combination of hardware that was never originally designed to work together as a single system. Building it required me to learn how to integrate those components, solve compatibility and mounting problems, revise earlier decisions, and sometimes redesign portions of the robot as new challenges appeared. The hardware choices documented below reflect that process and explain not only what I used, but why I chose each solution.
-
+As a result, ALLBERT became a custom combination of hardware that was never originally designed to work together as a single system. Building ALLBERT meant learning how to make these different components work together. Along the way, I had to solve compatibility and mounting problems, learn new methods of wiring and assembly, reconsider earlier decisions when something did not work as expected, and redesign portions of the robot as new challenges appeared. The hardware choices documented below reflect that process and explain not only what I used, but why I chose each solution.
 
 
 
