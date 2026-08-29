@@ -27,7 +27,7 @@ ALLBERT uses a layered architecture that separates high-level autonomous behavio
 The software architecture is divided into three primary layers:
 
 - **High-level Autonomous Layer:** Coordinates ALLBERT's overall autonomous behavior and determines what the robot should attempt to do.
-- -**Mid-Level Logic Layer:** Interprets sensor states and applies decision-making logic to determine appropriate actions, such as advancing, turning or escaping from a blocked path.
+- **Mid-Level Logic Layer:** Interprets sensor states and applies decision-making logic to determine appropriate actions, such as advancing, turning or escaping from a blocked path.
 - **Low-Level Hardware Logic:** This layer interfaces directly with the physical hardware, translating movement commands into GPIO and PWM signals used to control the motors.
 
 ### Computing Architecture
