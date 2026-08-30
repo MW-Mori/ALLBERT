@@ -154,47 +154,45 @@ The layered architecture therefore developed from both a software-design prefere
 
 #### Low-Level Hardware Control
 
-ALLBERT's software began with its low-level hardware-control code. The original program was primarily a Python class containing the BeagleBone Black GPIO pin assignments required to control the robot's motors. As the code developed, I wanted to keep the individual GPIO operations organized rather than allowing hardware instructions to become scattered throughout the program.
+The low-level hardware layer contains the operations required to translate movement requests into physical motor behavior. Rather than allowing GPIO and PWM instructions to become scattered throughout the program, I organized hardware operations inside dedicated functions with clearly defined purposes.
 
-I began placing the operations required for particular movements inside dedicated functions. Instead of other parts of the program needing to know which GPIO pins must be HIGH or LOW or how PWM should be configured, they could request a movement such as `move_forward()` and allow the hardware-control code to handle the individual operations required to produce that movement.
+Other parts of ALLBERT's software can request a movement such as `move_forward()` without needing to know which GPIO pins must be HIGH or LOW or how PWM must be configured. Those hardware-specific details remain contained within the low-level control code.
 
-I also organized the motors into left and right wheel groups so that common movement operations could work with those groups rather than repeating nearly identical code for each motor. This followed a programming principle I already valued: Don't Repeat Yourself (DRY). When the same behavior is required in multiple places, I prefer to implement the underlying logic once and reuse it.
+I also organized the motors into left and right wheel groups so that common movement operations could work with those groups rather than repeating nearly identical code for each motor. This follows a programming principle I already valued: Don't Repeat Yourself (DRY). When the same behavior is required in multiple places, I prefer to implement the underlying logic once and reuse it.
 
-Motor speed introduced another low-level consideration. PWM duty-cycle values must remain within their valid range, so I created a `clamp_speed()` function that constrains requested speed values between 0 and 100 before returning them for use by the PWM system. This prevents an out-of-range value from being passed directly into the hardware-control library.
+Motor speed introduced another low-level consideration. PWM duty-cycle values must remain within their valid range, so I created a `clamp_speed()` function that constrains requested speed values between 0 and 100 before they are passed to the PWM system. This prevents an out-of-range value from being sent directly to the hardware-control library.
 
 I also introduced a `@safe_method` decorator around low-level movement operations. Its purpose is to provide an additional layer of protection around GPIO-related operations so that incorrect data or an exception can be handled rather than allowing a hardware-control operation to fail without being accounted for.
 
-The result is a low-level layer with a clearly defined responsibility: translate movement requests into the GPIO and PWM operations required by ALLBERT's physical hardware while keeping those hardware-specific details contained within one part of the software.
+The result is a hardware-control interface that keeps GPIO and PWM implementation details contained while providing the rest of ALLBERT's software with reusable movement operations.
 
 #### Mid-Level Decision Logic
 
-As ALLBERT's software developed beyond direct hardware control, I wanted the decision-making process to remain simple and structured. Rather than allowing sensors to directly determine motor behavior, I separated sensing, decision-making, and physical movement into different responsibilities.
+The mid-level logic interprets ALLBERT's sensor information and determines which movement is appropriate for the robot's current surroundings. Rather than reacting to a single sensor in isolation, the logic can evaluate combinations of sensor states before selecting an action.
 
-The sensors provide information about ALLBERT's surroundings, while the mid-level logic interprets that information and determines which movement is appropriate. The resulting movement request can then be passed to the low-level hardware layer, which is responsible for translating that request into the GPIO and PWM operations required by the motors.
-
-This creates a structured progression of information through the system:
+This creates a structured progression through the control system:
 
 `Sensor State → Decision Logic → Movement Request → Hardware Control`
 
-The mid-level can also evaluate multiple sensor states when making a decision. For example, detecting an obstacle in front of ALLBERT does not automatically mean that the robot should always turn in one predetermined direction. The surrounding sensor states can be evaluated to determine which available movement is appropriate.
+For example, detecting an obstacle in front of ALLBERT does not automatically mean that the robot should always turn in one predetermined direction. The surrounding sensor states can also be evaluated to determine which available movement is appropriate.
 
-Mid-level functions receive the existing robot-control object as a parameter. This allows the decision logic to use capabilities such as `move_forward()` or `pivot_turn_left()` without creating or owning another hardware-control object. The mid-level therefore determines which action should occur while the low-level remains responsible for how that action is physically performed.
+Mid-level functions receive the existing robot-control object as a parameter. This allows the decision logic to use capabilities such as `move_forward()` or `pivot_turn_left()` without creating or owning another hardware-control object. The decision logic selects an available action while using the existing low-level interface to carry it out.
 
 I also created an `escape()` behavior for situations where the normal movement process should not continue. Rather than continuing to evaluate increasingly complicated movement conditions, the fallback behavior can stop the robot, back it away from the immediate situation, and end the current process.
 
-The purpose of the mid-level layer is therefore not to directly control ALLBERT's hardware, but to provide a clear transition between environmental information and physical action. Each subsystem performs its own responsibility, allowing data and control to progress through the program in a structured and understandable way.
+This keeps ALLBERT's decision process focused: evaluate the available environmental information, select an appropriate action, and pass that request through the established movement interface.
 
 #### High-Level Autonomous Control
 
 I wanted ALLBERT to be more than a robot that only responds to commands from a remote control or web interface. Part of the original idea behind the project was to give the robot a measure of behavioral identity: the ability to operate autonomously, respond to its surroundings, and produce behavior through its own control system rather than requiring a person to determine every movement.
 
-The high-level autonomous layer is responsible for coordinating this overall behavior. Instead of directly manipulating GPIO pins or evaluating every individual sensor condition, it determines what ALLBERT should currently be attempting to do and delegates the necessary decisions and actions to the appropriate subsystems. This follows an architecture based on dependencies, order, and authority.
+The high-level autonomous layer coordinates this overall behavior. Instead of directly manipulating GPIO pins or evaluating individual sensor conditions, it determines what ALLBERT should currently be attempting to do and delegates the necessary decisions and actions to the appropriate parts of the control system.
 
-This hierarchy does not mean that a higher layer has unrestricted authority over everything below it. A high-level autonomous behavior can request movement, but it cannot force that movement if another subsystem determines that the required conditions are not satisfied. For example, if the current sensor state does not permit safe forward movement, the autonomous layer cannot bypass that decision simply because its current objective is to continue forward.
+A key part of this design is that high-level intent does not provide unrestricted authority over the robot. An autonomous behavior can request movement, but it cannot force that movement if the conditions required for the action are not satisfied. For example, if the current sensor information does not permit safe forward movement, the autonomous objective cannot bypass that decision simply because it wants ALLBERT to continue forward.
 
-This allows autonomy to provide ALLBERT with direction without allowing an autonomous objective to override the responsibilities assigned to the systems responsible for decision-making and safety.
+This creates an authority boundary between what ALLBERT wants to accomplish and what the control system currently permits it to do. Autonomous behavior provides direction, while the systems responsible for evaluating current conditions retain the ability to prevent an inappropriate action.
 
-The result is an autonomous architecture in which each subsystem contributes according to its own responsibility and authority. Rather than one part of the program controlling everything, ALLBERT's behavior emerges from multiple systems executing their responsibilities in a defined order.
+The result is an autonomous control system in which larger behavioral objectives can guide ALLBERT without bypassing the checks that exist between intent and physical movement.
 
 #### FailSafe and Sensor Safety
 
