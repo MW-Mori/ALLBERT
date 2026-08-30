@@ -228,15 +228,13 @@ This design follows the same authority model used throughout ALLBERT. The Raspbe
 
 The original motivation for ALLBERT's web dashboard was simple: I wanted a way to control the robot from a screen. I had seen examples of machines and robots being controlled through digital interfaces and became interested in whether I could create something similar myself. Rather than relying only on a traditional physical remote control, I wanted to be able to press a button on a webpage and cause ALLBERT to physically move forward, backward, left, or right.
 
-A web dashboard also fit naturally into ALLBERT's two-computer architecture. I wanted to maintain a separation of responsibilities between the Raspberry Pi 3B+ and BeagleBone Black rather than having both computers perform the same tasks. The Raspberry Pi was assigned the web-interface and networking responsibilities, while the BeagleBone Black remained focused on hardware-facing control.
+The dashboard provides a human-facing interface for requesting actions without requiring the user to interact directly with ALLBERT's underlying hardware-control system. A movement requested through the dashboard can enter the same control architecture used by the rest of the robot rather than the webpage directly manipulating motors or GPIO.
 
-When a user requests movement through the dashboard, that intent progresses through ALLBERT's subsystems rather than the webpage directly controlling the motors. The Raspberry Pi handles the web and network side of the interaction and communicates the requested action through the defined interface between the two computers. The BeagleBone Black remains responsible for translating an authorized movement request into the GPIO and PWM control signals required by the TB6612FNG motor controller. The motor controller then uses the separate motor power supply to physically drive the motors.
-
-This maintains the same separation of responsibilities used throughout ALLBERT. The dashboard provides a way for a person to request an action, but it does not need to understand the electrical operations required to perform that action. Hardware-specific details remain contained within the subsystem responsible for hardware control.
+This preserves the boundaries established elsewhere in ALLBERT's architecture. The dashboard is responsible for presenting controls and communicating user intent, while the underlying control system remains responsible for determining how an accepted request is carried out.
 
 Developing the dashboard also introduced another advantage that was not part of my original motivation for choosing a web interface: cross-platform accessibility. Because the interface is based on standard web technologies, a device with a compatible web browser can potentially access the dashboard without requiring me to develop a separate native application for each operating system or device type. The dashboard can also be served within a local network; being web-based does not require ALLBERT's controls to be exposed to the public Internet.
 
-What began as a desire to control my robot from a webpage therefore developed into a user-interface architecture that complements the rest of ALLBERT's modular design. The Raspberry Pi provides the human-facing interface, the BeagleBone Black retains responsibility for hardware control, and the systems communicate through defined boundaries rather than sharing responsibilities unnecessarily.
+What began as a desire to control my robot from a webpage therefore developed into a practical human-machine interface that complements ALLBERT's autonomous capabilities while maintaining the modular structure of the rest of the system.
 
 #### Logging and Diagnostics
 
