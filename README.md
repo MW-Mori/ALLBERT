@@ -220,7 +220,19 @@ This creates a consistent boundary around sensor operations and supports one of 
 
 The FailSafe system exists because software errors in robotics can produce physical consequences. A missing or invalid sensor value is not simply incorrect program data; if handled incorrectly, it could cause ALLBERT to move into an obstacle. By separating sensor health from sensor readings and requiring trustworthy information for movement decisions, the control system avoids relying on guesswork when interacting with the physical environment.
 
+#### Raspberry Pi and BeagleBone Black Communication
 
+ALLBERT uses the Raspberry Pi 3B+ and BeagleBone Black as separate computing subsystems with different responsibilities. Rather than having both computers perform the same type of work, I wanted each platform to operate in the area where I had chosen to use its strengths. The Raspberry Pi handles the higher-level network and interface side of the system, while the BeagleBone Black remains responsible for hardware-facing control.
+
+Communication between the two systems is designed around an API. The Raspberry Pi does not need to know which individual GPIO pins must change state or how PWM must be configured to produce a particular movement. Instead, it can communicate the requested action to the BeagleBone Black through a defined interface.
+
+For example, the Raspberry Pi can request forward movement rather than directly instructing the BeagleBone Black to manipulate individual motor-control pins. The BeagleBone Black can then process that request through ALLBERT's control system and translate an authorized movement into the appropriate low-level hardware operations.
+
+This preserves abstraction between the two computers. If the physical motor-control implementation changes in the future, the Raspberry Pi does not necessarily need to change as long as the communication interface remains consistent.
+
+The API also establishes a clear boundary around what one subsystem is allowed to request from another. Rather than accepting arbitrary hardware instructions, the interface defines the operations that are available and the information that can be exchanged. This creates a controlled contract between the Raspberry Pi and BeagleBone Black.
+
+This design follows the same authority model used throughout ALLBERT. The Raspberry Pi can communicate intent, but it does not take ownership of the BeagleBone Black's hardware responsibilities. Each subsystem retains authority over its own role while communicating through a defined interface.
 
 
 
