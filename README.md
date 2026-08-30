@@ -170,7 +170,23 @@ I also introduced a `@safe_method` decorator around low-level movement operation
 
 The result is a low-level layer with a clearly defined responsibility: translate movement requests into the GPIO and PWM operations required by ALLBERT's physical hardware while keeping those hardware-specific details contained within one part of the software.
 
+#### Mid-Level Decision Logic
 
+As ALLBERT's software developed beyond direct hardware control, I wanted the decision-making process to remain simple and structured. Rather than allowing sensors to directly determine motor behavior, I separated sensing, decision-making, and physical movement into different responsibilities.
+
+The sensors provide information about ALLBERT's surroundings, while the mid-level logic interprets that information and determines which movement is appropriate. The resulting movement request can then be passed to the low-level hardware layer, which is responsible for translating that request into the GPIO and PWM operations required by the motors.
+
+This creates a structured progression of information through the system:
+
+`Sensor State → Decision Logic → Movement Request → Hardware Control`
+
+The mid-level can also evaluate multiple sensor states when making a decision. For example, detecting an obstacle in front of ALLBERT does not automatically mean that the robot should always turn in one predetermined direction. The surrounding sensor states can be evaluated to determine which available movement is appropriate.
+
+Mid-level functions receive the existing robot-control object as a parameter. This allows the decision logic to use capabilities such as `move_forward()` or `pivot_turn_left()` without creating or owning another hardware-control object. The mid-level therefore determines which action should occur while the low-level remains responsible for how that action is physically performed.
+
+I also created an `escape()` behavior for situations where the normal movement process should not continue. Rather than continuing to evaluate increasingly complicated movement conditions, the fallback behavior can stop the robot, back it away from the immediate situation, and end the current process.
+
+The purpose of the mid-level layer is therefore not to directly control ALLBERT's hardware, but to provide a clear transition between environmental information and physical action. Each subsystem performs its own responsibility, allowing data and control to progress through the program in a structured and understandable way.
 
 
 
