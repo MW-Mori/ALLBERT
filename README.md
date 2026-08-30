@@ -128,13 +128,11 @@ One of the early decisions in ALLBERT's development was determining what compute
 
 Rather than choosing one platform and abandoning the other, I began exploring whether the Raspberry Pi and BeagleBone Black could be used together. This led to a larger architectural decision: instead of having one computer responsible for every part of ALLBERT, I could give each computer a dedicated role and allow them to operate together as parts of a larger system.
 
-The BeagleBone Black became ALLBERT's hardware-control computer. It interfaces with the robot's sensors and sends the GPIO and PWM control signals required by the motor controller. The Raspberry Pi 3B+ was assigned the higher-level interface and network role, providing the foundation for ALLBERT's web dashboard and communication with the BeagleBone Black.
+This separation reflects the same design philosophy I use when writing software. I prefer systems in which individual functions, classes, components, and subsystems have clearly defined responsibilities rather than having one part attempt to perform every task.
 
-This separation reflects the same design philosophy I use when writing software. I prefer systems in which individual functions, classes, components, and subsystems have clearly defined responsibilities rather than having one part attempt to perform every task. The Raspberry Pi and BeagleBone Black therefore operate as separate subsystems with different responsibilities while contributing to the operation of the same robot.
+Using two computing platforms therefore allows ALLBERT to operate as a collection of specialized subsystems rather than placing every responsibility on a single computer. It also allows those subsystems to develop independently. Changes to the user-facing or network side of ALLBERT do not necessarily require changes to the hardware-control system, and changes to the physical hardware do not necessarily require redesigning the higher-level interface.
 
-For example, a movement command originating from ALLBERT's web dashboard can be received by the Raspberry Pi and communicated to the BeagleBone Black. The BeagleBone Black then translates the requested movement into the appropriate control signals for the TB6612FNG motor controller, which supplies the motor outputs that physically drive the robot.
-
-Using two computing platforms gives ALLBERT a modular computing architecture in which the user-facing and network responsibilities can develop independently from the hardware-control system while still allowing both sides to work together as a complete robotic system.
+The decision to use both computers ultimately became more than a way to incorporate two platforms I was interested in. It became part of ALLBERT's larger modular architecture, where responsibilities are separated according to purpose and individual subsystems work together to form the complete robotic system.
 
 ## Software
 
@@ -214,7 +212,7 @@ The FailSafe system exists because software errors in robotics can produce physi
 
 #### Raspberry Pi and BeagleBone Black Communication
 
-ALLBERT uses the Raspberry Pi 3B+ and BeagleBone Black as separate computing subsystems with different responsibilities. Rather than having both computers perform the same type of work, I wanted each platform to operate in the area where I had chosen to use its strengths. The Raspberry Pi handles the higher-level network and interface side of the system, while the BeagleBone Black remains responsible for hardware-facing control.
+Once I decided to divide ALLBERT's computing responsibilities between two computers, I needed a controlled way for those systems to communicate without either subsystem taking ownership of the other's responsibilities.
 
 Communication between the two systems is designed around an API. The Raspberry Pi does not need to know which individual GPIO pins must change state or how PWM must be configured to produce a particular movement. Instead, it can communicate the requested action to the BeagleBone Black through a defined interface.
 
