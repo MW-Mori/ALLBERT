@@ -206,7 +206,19 @@ This allows autonomy to provide ALLBERT with direction without allowing an auton
 
 The result is an autonomous architecture in which each subsystem contributes according to its own responsibility and authority. Rather than one part of the program controlling everything, ALLBERT's behavior emerges from multiple systems executing their responsibilities in a defined order.
 
+#### FailSafe and Sensor Safety
 
+As ALLBERT became dependent on sensor information for autonomous movement, I needed a way to ensure that movement decisions were based on trustworthy data. A failed sensor reading should not be interpreted as permission to move. If the system cannot determine whether a direction is safe, it should not guess.
+
+This led to the development of ALLBERT's `FailSafe` system. In addition to the environmental state reported by a sensor, the system maintains information about whether the sensor itself is currently producing trustworthy data. These represent two different conditions: a sensor reporting that a direction is blocked is valid environmental information, while a sensor failing to produce a valid reading represents a problem with the sensing system itself.
+
+If a sensor operation returns invalid data such as `None` or encounters an exception, the corresponding sensor can be marked unhealthy. Movement logic can then prevent that unknown condition from being treated as a clear path. Trustworthy information is therefore required before a direction can be considered available for movement.
+
+I also use decorators to provide persistent protection around operations that require error and state checking. Rather than relying on each individual sensor function to independently implement the same protective behavior, a sensor-safety decorator can wrap the operation, evaluate whether it completed successfully, and update the sensor's health state.
+
+This creates a consistent boundary around sensor operations and supports one of the primary safety principles behind ALLBERT: uncertainty should not automatically become permission.
+
+The FailSafe system exists because software errors in robotics can produce physical consequences. A missing or invalid sensor value is not simply incorrect program data; if handled incorrectly, it could cause ALLBERT to move into an obstacle. By separating sensor health from sensor readings and requiring trustworthy information for movement decisions, the control system avoids relying on guesswork when interacting with the physical environment.
 
 
 
