@@ -156,7 +156,19 @@ For ALLBERT, that separation has an additional safety purpose. Information can b
 
 The layered architecture therefore developed from both a software-design preference and a physical requirement: as ALLBERT became more autonomous, its software needed a structure that could organize responsibility while reducing the possibility that bad information would lead directly to unsafe movement.
 
+#### Low-Level Hardware Control
 
+ALLBERT's software began with its low-level hardware-control code. The original program was primarily a Python class containing the BeagleBone Black GPIO pin assignments required to control the robot's motors. As the code developed, I wanted to keep the individual GPIO operations organized rather than allowing hardware instructions to become scattered throughout the program.
+
+I began placing the operations required for particular movements inside dedicated functions. Instead of other parts of the program needing to know which GPIO pins must be HIGH or LOW or how PWM should be configured, they could request a movement such as `move_forward()` and allow the hardware-control code to handle the individual operations required to produce that movement.
+
+I also organized the motors into left and right wheel groups so that common movement operations could work with those groups rather than repeating nearly identical code for each motor. This followed a programming principle I already valued: Don't Repeat Yourself (DRY). When the same behavior is required in multiple places, I prefer to implement the underlying logic once and reuse it.
+
+Motor speed introduced another low-level consideration. PWM duty-cycle values must remain within their valid range, so I created a `clamp_speed()` function that constrains requested speed values between 0 and 100 before returning them for use by the PWM system. This prevents an out-of-range value from being passed directly into the hardware-control library.
+
+I also introduced a `@safe_method` decorator around low-level movement operations. Its purpose is to provide an additional layer of protection around GPIO-related operations so that incorrect data or an exception can be handled rather than allowing a hardware-control operation to fail without being accounted for.
+
+The result is a low-level layer with a clearly defined responsibility: translate movement requests into the GPIO and PWM operations required by ALLBERT's physical hardware while keeping those hardware-specific details contained within one part of the software.
 
 
 
