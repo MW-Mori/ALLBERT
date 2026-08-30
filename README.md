@@ -200,7 +200,7 @@ As ALLBERT became dependent on sensor information for autonomous movement, I nee
 
 This led to the development of ALLBERT's `FailSafe` system. In addition to the environmental state reported by a sensor, the system maintains information about whether the sensor itself is currently producing trustworthy data. These represent two different conditions: a sensor reporting that a direction is blocked is valid environmental information, while a sensor failing to produce a valid reading represents a problem with the sensing system itself.
 
-If a sensor operation returns invalid data such as `None` or encounters an exception, the corresponding sensor can be marked unhealthy. Movement logic can then prevent that unknown condition from being treated as a clear path. Trustworthy information is therefore required before a direction can be considered available for movement.
+If a sensor operation returns invalid data such as `None` or encounters an exception, the corresponding sensor can be marked unhealthy. Movement logic can then prevent that unknown condition from being treated as a clear path. A direction can therefore be considered available for movement only when the system has a valid, trustworthy sensor reading.
 
 I also use decorators to provide persistent protection around operations that require error and state checking. Rather than relying on each individual sensor function to independently implement the same protective behavior, a sensor-safety decorator can wrap the operation, evaluate whether it completed successfully, and update the sensor's health state.
 
