@@ -188,7 +188,23 @@ I also created an `escape()` behavior for situations where the normal movement p
 
 The purpose of the mid-level layer is therefore not to directly control ALLBERT's hardware, but to provide a clear transition between environmental information and physical action. Each subsystem performs its own responsibility, allowing data and control to progress through the program in a structured and understandable way.
 
+#### High-Level Autonomous Control
 
+I wanted ALLBERT to be more than a robot that only responds to commands from a remote control or web interface. Part of the original idea behind the project was to give the robot a measure of behavioral identity: the ability to operate autonomously, respond to its surroundings, and produce behavior through its own control system rather than requiring a person to determine every movement.
+
+The high-level autonomous layer is responsible for coordinating this overall behavior. Instead of directly manipulating GPIO pins or evaluating every individual sensor condition, it determines what ALLBERT should currently be attempting to do and delegates the necessary decisions and actions to the appropriate subsystems.
+
+This follows an architecture based on dependencies, order, and authority. Each layer has a defined responsibility:
+
+- The **high-level layer** coordinates the robot's overall autonomous objective.
+- The **mid-level layer** determines whether and how movement should occur based on the robot's current conditions.
+- The **low-level layer** determines how an approved movement is translated into physical hardware operations.
+
+This hierarchy does not mean that a higher layer has unrestricted authority over everything below it. A high-level autonomous behavior can request movement, but it cannot force that movement if another subsystem determines that the required conditions are not satisfied. For example, if the current sensor state does not permit safe forward movement, the autonomous layer cannot bypass that decision simply because its current objective is to continue forward.
+
+This allows autonomy to provide ALLBERT with direction without allowing an autonomous objective to override the responsibilities assigned to the systems responsible for decision-making and safety.
+
+The result is an autonomous architecture in which each subsystem contributes according to its own responsibility and authority. Rather than one part of the program controlling everything, ALLBERT's behavior emerges from multiple systems executing their responsibilities in a defined order.
 
 
 
