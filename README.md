@@ -248,7 +248,19 @@ Developing the dashboard also introduced another advantage that was not part of 
 
 What began as a desire to control my robot from a webpage therefore developed into a user-interface architecture that complements the rest of ALLBERT's modular design. The Raspberry Pi provides the human-facing interface, the BeagleBone Black retains responsibility for hardware control, and the systems communicate through defined boundaries rather than sharing responsibilities unnecessarily.
 
+#### Logging and Diagnostics
 
+As ALLBERT became divided into multiple software layers and subsystems, I wanted a way to understand not only what the robot physically did, but why the software produced that behavior. Observing the robot can reveal that something went wrong, but physical behavior alone does not necessarily identify which part of the system caused it.
+
+For example, ALLBERT might turn toward a direction that is physically blocked. From observation, I can determine that the resulting movement was incorrect, but I also need to know what information the software had when it made that decision. Recording the sensor states, decision made by the logic layer, FailSafe information, and movement ultimately executed by the hardware layer allows the software's understanding of the environment to be compared with the physical environment I observed.
+
+This provides traceability through the control system. If a sensor reports that the left side is clear and the decision logic consequently selects a left turn, the decision may be logically correct for the information it received even though the physical result is wrong. The recorded information helps narrow the investigation toward the sensor or interpretation of its data rather than immediately assuming that the decision algorithm failed.
+
+I also wanted diagnostic information to identify the subsystem that generated it. Separating logging between areas such as communication, decision logic, FailSafe behavior, and low-level hardware control makes the output more meaningful and reduces the amount of unrelated information that must be investigated when troubleshooting a problem.
+
+Structured logging provides additional capabilities beyond temporary `print()` statements. Log records can be associated with named loggers and severity levels such as `DEBUG`, `INFO`, `WARNING`, and `ERROR`, allowing diagnostic information to be categorized and filtered according to its purpose. This makes the logging system useful for both observing normal program behavior and investigating failures.
+
+Logging therefore serves as an observability tool for ALLBERT. The goal is not simply to report that an error occurred, but to provide enough information to trace the robot's behavior through its subsystems, isolate where unexpected behavior originated, and reduce the time required to diagnose problems.
 
 
 
